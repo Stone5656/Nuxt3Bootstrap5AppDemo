@@ -1,13 +1,33 @@
-import { isValidMove } from './sudokuSolver';
+export function generateSudoku(difficulty) {
+  console.log('Generating sudoku with difficulty:', difficulty);
+  const gridSizes = {
+    easy: 9,
+    medium: 16,
+    hard: 25 // 例として25x25をハードに設定
+  };
 
-export function generateSudoku(grid) {
-    console.log(grid)
-  for (let row = 0; row < grid.length; row++) {
-    for (let col = 0; col < grid[row].cells.length; col++) {
-      const num = Math.floor(Math.random() * 100);  // 1から100の間でランダムな数字を生成
-      if (isValidMove(grid, row, col, num)) {
-        grid[row].cells[col].value = num;  // ルールに違反しない場合は、数字をグリッドに配置
-      }
-    }
+  const gridSize = gridSizes[difficulty];
+  if (!gridSize) {
+    console.error('Invalid difficulty level:', difficulty);
+    return;
   }
+
+  const grid = createSudokuGrid(gridSize); // グリッドサイズに基づいて数独を生成
+
+  return grid;
 }
+
+
+function createSudokuGrid(size) {
+  const grid = [];
+  for (let i = 0; i < size; i++) {
+    const cells = [];
+    for (let j = 0; j < size; j++) {
+      cells.push({ index: j, value: '' });
+    }
+    grid.push({ index: i, cells });
+  }
+  return grid;
+}
+
+module.exports = createSudokuGrid;

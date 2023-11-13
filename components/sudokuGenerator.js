@@ -11,14 +11,16 @@ export function generateSudoku(difficulty) {
     console.error('Invalid difficulty level:', difficulty);
     return;
   }
+  console.log(gridSize)
 
-  const grid = createSudokuGrid(gridSize); // グリッドサイズに基づいて数独を生成
+  const grid = createSudokuGrid(gridSize);
+  fillGridRandomly(grid); // ここでグリッドにランダムな数字を配置
 
   return grid;
 }
 
 
-function createSudokuGrid(size) {
+export function createSudokuGrid(size) {
   const grid = [];
   for (let i = 0; i < size; i++) {
     const cells = [];
@@ -29,5 +31,12 @@ function createSudokuGrid(size) {
   }
   return grid;
 }
-
-module.exports = createSudokuGrid;
+function fillGridRandomly(grid) {
+  grid.forEach(row => {
+    row.cells.forEach(cell => {
+      // 1からグリッドサイズまでのランダムな数字を生成
+      const randomNumber = Math.ceil(Math.random() * grid.length);
+      cell.value = randomNumber;
+    });
+  });
+}

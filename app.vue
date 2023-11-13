@@ -4,8 +4,16 @@
   </div>
 </template>
 
-<script setup>
+<script>
 import SudokuGrid from '~/components/SudokuGrid.vue';
+import { provide } from 'vue';
+
+export default {
+  setup() {
+    provide('gridSizes');
+    // 他のロジックがあればここに追加
+  },
+};
 </script>
 
 <style>

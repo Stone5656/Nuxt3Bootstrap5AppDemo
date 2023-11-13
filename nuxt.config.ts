@@ -24,4 +24,5 @@ export default defineNuxtConfig({
         "bootstrap/scss/bootstrap.scss",
         '@/assets/style.css'
     ],
+    plugins: ['~/plugins/gridSizes.js'],
 })

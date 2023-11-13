@@ -21,11 +21,14 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue';
+import { ref, watch, inject } from 'vue';
 import { isValidMove, isComplete as checkIfComplete } from './sudokuSolver';  // sudokuSolver.jsをインポート
-import { generateSudoku } from './sudokuGenerator'
+import { generateSudoku, createSudokuGrid } from './sudokuGenerator'; // ここを変更
 
-const rows = createSudokuGrid(9);
+const gridSizes = inject('gridSizes') || 9; // デフォルト値を設定
+const rows = ref(createSudokuGrid(gridSizes)); // ref を使用して初期化
+const currentDifficulty = ref(gridSizes); // 例として 'easy' をデフォルト値とする
+
 const selectedRow = ref(-1);  // 選択したセルの行
 const selectedCol = ref(-1);  // 選択したセルの列
 const selectedNumber = ref('');  // 選択したセルの値
@@ -36,41 +39,30 @@ const selectCell = (row, col, value) => {
   selectedNumber.value = value;
 };
 
-function createSudokuGrid(size) {
-  const grid = [];
-  for (let i = 0; i < size; i++) {
-    const cells = [];
-    for (let j = 0; j < size; j++) {
-      cells.push({ index: j, value: '' });
-    }
-    grid.push({ index: i, cells });
-  }
-  return grid;
-}
-
 const validateMove = (row, col, value) => {
-  if (!isValidMove(rows.value, row, col, value)) {
+  if (!isValidMove(rows.value, row, col, value)) { // rows.value を使用
     console.error('Invalid move');
-    // ここでユーザーに無効な動きであることを通知するか、入力をリセットするなどの処理を行います。
+    // 無効な動きを通知する処理
   }
 };
+
 watch(rows, () => {
-  isPuzzleComplete.value = checkIfComplete(rows.value);  // 関数名を変更
+  isPuzzleComplete.value = checkIfComplete(rows.value); // rows.value を使用
 });
 
 const isPuzzleComplete = ref(false);  // 変数名を変更
+
 const fillNumbers = () => {
-  generateSudoku(rows);  // ボタンがクリックされたら、generateSudoku関数を呼び出す
+  rows.value = generateSudoku(currentDifficulty.value); // 現在の難易度を渡す
 };
 
 const setDifficulty = (level) => {
   console.log('Setting difficulty to:', level);
-
   switch (level) {
     case 'easy':
     case 'medium':
     case 'hard':
-      rows.value = generateSudoku(level);
+      rows.value = generateSudoku(level); // 新しいグリッドを割り当てる
       break;
     default:
       console.error('Unknown difficulty level:', level);

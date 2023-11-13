@@ -52,8 +52,9 @@ export function isComplete(grid) {
     for (let row = 0; row < rows; row++) {
         for (let col = 0; col < cols; col++) {
             if (actualGrid[row].cells[col]?.value === '') {
+                return false; // 空のセルがあれば false を返す
             }
         }
     }
-    return true;
+    return true; // すべてのセルが埋まっていれば true を返す
 }

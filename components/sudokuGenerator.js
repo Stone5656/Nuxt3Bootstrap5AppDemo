@@ -1,30 +1,22 @@
 import { isValidMove } from "./sudokuSolver";
 
-export function generateSudoku(difficulty) {
-  console.log('Generating sudoku with difficulty:', difficulty);
-  const gridSizes = {
-    easy: 9,
-    medium: 16,
-    hard: 25 // 例として25x25をハードに設定
-  };
+export function generateSudoku(gridSize) {
+  console.log('Generating sudoku with grid size:', gridSize);
 
-  const gridSize = gridSizes[difficulty];
-  if (!gridSize) {
-    console.error('Invalid difficulty level:', difficulty);
+  if (![9, 16, 25].includes(gridSize)) {
+    console.error('Invalid grid size:', gridSize);
     return;
   }
-  console.log(gridSize)
 
   const grid = createSudokuGrid(gridSize);
   if (fillGridRandomly(grid)) {
-    removeNumbers(grid, difficulty);
+    removeNumbers(grid, gridSize); // ここで gridSize を使うか、または difficulty に基づいて数値を削除するロジックを調整する
     return grid;
   } else {
     console.error('Failed to generate a valid grid');
     return null;
   }
 }
-
 
 export function createSudokuGrid(size) {
   const grid = [];

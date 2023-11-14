@@ -5,7 +5,6 @@
 </template>
 
 <script>
-import SudokuGrid from '~/components/SudokuGrid.vue';
 import { provide } from 'vue';
 
 export default {

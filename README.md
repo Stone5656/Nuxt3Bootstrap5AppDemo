@@ -9,8 +9,8 @@ UIをユーザーが使いやすいように変更する
 
 ## 今後解決すべき課題
 
-100はとりあえず作れたが見にくいため、別の難易度を作っている
-SudokuGrid.vueの28行目const rows = ref(createSudokuGrid(100));の100を、sudokuGeneratorの11行目gridsizeに変更したい
+25x25ですら重いことが分かったので、もっとアルゴリズムを最適化したい。
+あと非同期の方法が分からないので非同期の仕方を覚えたい
 
 # Nuxt 3 Minimal Starter
 

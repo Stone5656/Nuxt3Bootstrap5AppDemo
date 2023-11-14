@@ -22,7 +22,7 @@
 
 <script setup>
 import { ref, watch, inject } from 'vue';
-import { isValidMove, isComplete as checkIfComplete } from './sudokuSolver';  // sudokuSolver.jsをインポート
+import { isComplete as checkIfComplete } from './sudokuSolver';  // sudokuSolver.jsをインポート
 import { generateSudoku, createSudokuGrid } from './sudokuGenerator'; // ここを変更
 
 const gridSizes = inject('gridSizes') || 9; // デフォルト値を設定
@@ -39,34 +39,21 @@ const selectCell = (row, col, value) => {
   selectedNumber.value = value;
 };
 
-const validateMove = (row, col, value) => {
-  if (!isValidMove(rows.value, row, col, value)) { // rows.value を使用
-    console.error('Invalid move');
-    // 無効な動きを通知する処理
-  }
-};
-
 watch(rows, () => {
   isPuzzleComplete.value = checkIfComplete(rows.value); // rows.value を使用
 });
 
 const isPuzzleComplete = ref(false);  // 変数名を変更
 
-const fillNumbers = () => {
-  rows.value = generateSudoku(currentDifficulty.value); // 現在の難易度を渡す
+const fillNumbers = async () => {
+  const newGrid = await generateSudoku(currentDifficulty.value);
+  rows.value = newGrid; // 新しいグリッドを割り当てる
 };
 
 const setDifficulty = (level) => {
   console.log('Setting difficulty to:', level);
-  switch (level) {
-    case 'easy':
-    case 'medium':
-    case 'hard':
-      rows.value = generateSudoku(level); // 新しいグリッドを割り当てる
-      break;
-    default:
-      console.error('Unknown difficulty level:', level);
-  }
+  currentDifficulty.value = level; // 難易度を更新
+  fillNumbers(); // 新しいグリッドを生成
 };
 </script>
 

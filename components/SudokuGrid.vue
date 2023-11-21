@@ -9,7 +9,7 @@
     <div class="sudoku-grid" :data-size="gridSizes">
       <div v-for="row in rows" :key="row.index" class="row">
         <div v-for="cell in row.cells" :key="cell.index" :class="getCellClass(row.index, cell.index)">
-  <input type="text" v-model="cell.value" maxlength="2" @input="validateMove(row.index, cell.index, cell.value)" />
+          <input type="text" v-model="cell.value" maxlength="1" @input="validateMove(row.index, cell.index, cell.value)" />
 </div>
       </div>
     </div>
@@ -19,18 +19,28 @@
 
 <script setup>
 import { ref, watch, inject } from 'vue';
-import { isComplete as checkIfComplete } from './sudokuSolver';  // sudokuSolver.jsをインポート
+import {isValidMove, isComplete as checkIfComplete, isPuzzleValid } from './sudokuSolver';  // sudokuSolver.jsをインポート
 import { generateSudoku, createSudokuGrid } from './sudokuGenerator'; // ここを変更
 
 const gridSizes = ref(inject('gridSizes') || 9);
 const rows = ref(createSudokuGrid(gridSizes)); // ref を使用して初期化
 const currentDifficulty = ref(gridSizes); // 例として 'easy' をデフォルト値とする
 
-watch(rows, () => {
-  isPuzzleComplete.value = checkIfComplete(rows.value); // rows.value を使用
-});
 
-const isPuzzleComplete = ref(false);  // 変数名を変更
+watch(rows, () => {
+  if (checkIfComplete(rows.value) && isPuzzleValid(rows.value)) {
+    alert("Congratulations! You have completed the puzzle.");
+    puzzleCompleted.value = true
+  }
+}, { deep: true });
+
+const puzzleCompleted = ref(false);
+
+const validateMove = (rowIndex, colIndex, value) => {
+  if (!isValidMove(rows.value, rowIndex, colIndex, value)) {
+    alert("Invalid move!");
+  }
+};
 
 const fillNumbers = async () => {
   const newGrid = await generateSudoku(currentDifficulty.value);

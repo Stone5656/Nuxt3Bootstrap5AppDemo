@@ -1,5 +1,4 @@
 export function isValidMove(grid, row, col, num) {
-    
     const actualGrid = grid.value ? grid.value : grid;  // Proxyオブジェクトを考慮
 
     if (num === '' || num < 1 || num > actualGrid.length) { // numの最大値を動的に変更
@@ -8,6 +7,10 @@ export function isValidMove(grid, row, col, num) {
 
     const rows = actualGrid.length;
     const cols = actualGrid[0].cells.length;
+    const number = parseInt(num, 10);
+    if (isNaN(number) || number < 1 || number > actualGrid.length) {
+        return false;
+    }
 
     // 同じ行に同じ数字があるかチェック
     for (let x = 0; x < cols; x++) {
@@ -57,4 +60,19 @@ export function isComplete(grid) {
         }
     }
     return true; // すべてのセルが埋まっていれば true を返す
+}
+
+export function isPuzzleValid(grid) {
+    const actualGrid = grid.value ? grid.value : grid;
+    const rows = actualGrid.length;
+
+    for (let row = 0; row < rows; row++) {
+        for (let col = 0; col < rows; col++) {
+            const cellValue = actualGrid[row].cells[col].value;
+            if (cellValue !== '' && !isValidMove(actualGrid, row, col, cellValue)) {
+                return false;
+            }
+        }
+    }
+    return true;
 }

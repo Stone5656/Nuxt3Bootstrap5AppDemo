@@ -5,8 +5,6 @@
 </template>
 
 <script>
-import { provide } from 'vue';
-
 export default {
   setup() {
     provide('gridSizes');

@@ -1,4 +1,17 @@
-export function isValidMove(grid, row, col, num) {
+const memoize = (fn) => {
+    const cache = new Map();
+    return function (...args) {
+        const key = JSON.stringify(args);
+        if (cache.has(key)) {
+            return cache.get(key);
+        }
+        const result = fn.apply(this, args);
+        cache.set(key, result);
+        return result;
+    };
+};
+
+export const isValidMove = memoize((grid, row, col, num) => {
     const actualGrid = grid.value ? grid.value : grid;  // Proxyオブジェクトを考慮
 
     if (num === '' || num < 1 || num > actualGrid.length) { // numの最大値を動的に変更
@@ -14,14 +27,14 @@ export function isValidMove(grid, row, col, num) {
 
     // 同じ行に同じ数字があるかチェック
     for (let x = 0; x < cols; x++) {
-        if (actualGrid[row].cells[x].value == num && x !== col) { 
+        if (actualGrid[row].cells[x].value == num && x !== col) {
             return false;
         }
     }
 
     // 同じ列に同じ数字があるかチェック
     for (let y = 0; y < rows; y++) {
-        if (actualGrid[y].cells[col].value == num && y !== row) { 
+        if (actualGrid[y].cells[col].value == num && y !== row) {
             return false;
         }
     }
@@ -33,17 +46,17 @@ export function isValidMove(grid, row, col, num) {
     for (let i = 0; i < sqrt; i++) {
         for (let j = 0; j < sqrt; j++) {
             if (actualGrid[i + startRow].cells[j + startCol].value == num &&
-                (i + startRow !== row || j + startCol !== col)) { 
+                (i + startRow !== row || j + startCol !== col)) {
                 return false;
             }
         }
     }
 
     return true;
-}
+});
 
-export function isComplete(grid) {
-    const actualGrid = grid.value ? grid.value : grid;  
+export const isComplete = memoize((grid) => {
+    const actualGrid = grid.value ? grid.value : grid;
 
     const rows = actualGrid.length;
     const cols = actualGrid[0]?.cells.length;
@@ -60,9 +73,9 @@ export function isComplete(grid) {
         }
     }
     return true; // すべてのセルが埋まっていれば true を返す
-}
+});
 
-export function isPuzzleValid(grid) {
+export const isPuzzleValid = memoize((grid) => {
     const actualGrid = grid.value ? grid.value : grid;
     const rows = actualGrid.length;
 
@@ -75,4 +88,4 @@ export function isPuzzleValid(grid) {
         }
     }
     return true;
-}
+});

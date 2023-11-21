@@ -1,6 +1,6 @@
 import { isValidMove } from "./sudokuSolver";
 
-export function generateSudoku(gridSize) {
+export async function generateSudoku(gridSize) {
   console.log('Generating sudoku with grid size:', gridSize);
 
   if (![9, 16, 25].includes(gridSize)) {

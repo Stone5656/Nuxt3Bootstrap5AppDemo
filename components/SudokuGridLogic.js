@@ -14,13 +14,16 @@ export default function SudokuLogic() {
     }
   }, { deep: true });
 
-
+  const { maxlength } = useMaxLength(gridSizes);
 
   const validateMove = (rowIndex, colIndex, value) => {
-    if (!isValidMove(rows.value, rowIndex, colIndex, value)) {
-      alert("Invalid move!");
+    if (maxlength.value >= 2 && value.length === 1) {
+        return;
     }
-  };
+    if (value.length >= 2 && !isValidMove(rows.value, rowIndex, colIndex, value)) {
+        alert("Invalid move!");
+    }
+};
 
   const fillNumbers = async () => {
     const newGrid = await generateSudoku(currentDifficulty.value);

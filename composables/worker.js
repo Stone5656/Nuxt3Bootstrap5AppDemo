@@ -1,4 +1,4 @@
-onmessage = function(e) {
+onmessage =  function(e) {
     if (e.data.action === 'generateSudoku') {
         const gridSize = e.data.gridSize;
         // 数独生成のロジック

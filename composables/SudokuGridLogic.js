@@ -1,14 +1,13 @@
-import { isValidMove, isComplete as checkIfComplete, isPuzzleValid } from './sudokuSolver';  // sudokuSolver.jsをインポート
-import { generateSudoku, createSudokuGrid } from './sudokuGenerator'; // ここを変更
-
-export default function SudokuLogic() {
+const { isValidMove, isComplete, isPuzzleValid } = useSudokuSolver();
+const { generateSudoku,createSudokuGrid } = useSudokuGenerator()
+export const useSudokuLogic = () => {
   const gridSizes = ref(inject('gridSizes') || 9);
   const rows = ref(createSudokuGrid(gridSizes)); // ref を使用して初期化
   const currentDifficulty = ref(gridSizes); // 例として 'easy' をデフォルト値とする
   const puzzleCompleted = ref(false);
 
   watch(rows, () => {
-    if (checkIfComplete(rows.value) && isPuzzleValid(rows.value)) {
+    if (isComplete(rows.value) && isPuzzleValid(rows.value)) {
       alert("Congratulations! You have completed the puzzle.");
       puzzleCompleted.value = true
     }
@@ -18,12 +17,12 @@ export default function SudokuLogic() {
 
   const validateMove = (rowIndex, colIndex, value) => {
     if (maxlength.value >= 2 && value.length === 1) {
-        return;
+      return;
     }
     if (value.length >= 2 && !isValidMove(rows.value, rowIndex, colIndex, value)) {
-        alert("Invalid move!");
+      alert("Invalid move!");
     }
-};
+  };
 
   const fillNumbers = async () => {
     const newGrid = await generateSudoku(currentDifficulty.value);
@@ -43,4 +42,4 @@ export default function SudokuLogic() {
     fillNumbers(); // 新しいグリッドを生成
   };
   return { rows, gridSizes, validateMove, setDifficulty, puzzleCompleted };
-}
+};

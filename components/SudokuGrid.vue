@@ -13,9 +13,8 @@
 
 <script setup>
 import SudokuRow from './SudokuRow.vue';
-import SudokuGridLogic from './SudokuGridLogic.js';
 
-const { rows, gridSizes, validateMove, setDifficulty } = SudokuGridLogic();
+const { rows, gridSizes, validateMove, setDifficulty } = useSudokuLogic();
 
 provide('rows', rows);
 provide('gridSizes', gridSizes);

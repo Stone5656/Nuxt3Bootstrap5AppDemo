@@ -1,16 +1,23 @@
 export async function apiIsValidMove(grid, row, col, num) {
-    const response = await fetch('/api/is_valid_move', {
+    try {
+        const response = await fetch('../api/is_valid_move', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({ grid, row, col, num })
     });
+    if (!response.ok) {
+        throw new Error('Network response was not ok');
+    }
     const data = await response.json();
     return data.valid;
-}
+} catch (error) {
+    console.error('Error:', error);
+    return false; // または適切なエラー処理
+}}
 export async function apiIsComplete(grid) {
-    const response = await fetch('/api/is_complete', {
+    const response = await fetch('../api/is_complete', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -21,7 +28,7 @@ export async function apiIsComplete(grid) {
     return data.complete;
 }
 export async function apiIsPuzzleValid(grid) {
-    const response = await fetch('/api/is_puzzle_valid', {
+    const response = await fetch('../api/is_puzzle_valid', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -32,7 +39,7 @@ export async function apiIsPuzzleValid(grid) {
     return data.valid;
 }
 export async function apiGenerateSudoku(gridSize, difficulty) {
-    const response = await fetch('/api/generate_sudoku', {
+    const response = await fetch('../api/generate_sudoku', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -43,7 +50,7 @@ export async function apiGenerateSudoku(gridSize, difficulty) {
     return data;
 }
 export async function apiCreateSudokuGrid(size) {
-    const response = await fetch('/api/create_sudoku_grid', {
+    const response = await fetch('../api/create_sudoku_grid', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

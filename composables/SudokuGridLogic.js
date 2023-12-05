@@ -3,9 +3,17 @@ import { apiIsValidMove, apiIsComplete, apiIsPuzzleValid } from '../api/sudokuap
 
 export const useSudokuLogic = () => {
   const gridSizes = ref(inject('gridSizes') || 9);
-  const rows = ref(await apiCreateSudokuGrid(gridSizes.value));
+  const rows = ref([]);
   const currentDifficulty = ref(gridSizes); // 例として 'easy' をデフォルト値とする
   const puzzleCompleted = ref(false);
+  const initializeGrid = async () => {
+    const initialGrid = await apiCreateSudokuGrid(gridSizes.value);
+    rows.value = initialGrid;
+  };
+
+  onMounted(async () => {
+    await initializeGrid();
+  });
 
   watch(rows, async () => {
     if (await apiIsComplete(rows.value) && await apiIsPuzzleValid(rows.value)) {

@@ -1,4 +1,4 @@
-const { isValidMove, } = useSudokuSolver()
+import { apiIsValidMove } from "~/api/sudokuapi";
 export const useSudokuGenerator = () => {
   async function generateSudoku(gridSize) {
     console.log('Generating sudoku with grid size:', gridSize);
@@ -29,7 +29,7 @@ export const useSudokuGenerator = () => {
     }
     return grid;
   }
-  function fillGridRandomly(grid, row = 0, col = 0) {
+  async function fillGridRandomly(grid, row = 0, col = 0) {
     if (row === grid.length) {
       return true; // グリッドの最後まで到達した場合、成功
     }
@@ -39,7 +39,7 @@ export const useSudokuGenerator = () => {
 
     const numbers = shuffleArray(1, grid.length);
     for (let num of numbers) {
-      if (isValidMove(grid, row, col, num)) {
+      if (await apiIsValidMove(grid, row, col, num)) {
         grid[row].cells[col].value = num;
         if (fillGridRandomly(grid, nextRow, nextCol)) {
           return true; // 次のセルに進む

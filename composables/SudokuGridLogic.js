@@ -1,13 +1,14 @@
-const { isValidMove, isComplete, isPuzzleValid } = useSudokuSolver();
-const { generateSudoku,createSudokuGrid } = useSudokuGenerator()
+import { apiGenerateSudoku,apiCreateSudokuGrid } from '../api/sudokuapi';
+import { apiIsValidMove, apiIsComplete, apiIsPuzzleValid } from '../api/sudokuapi'
+
 export const useSudokuLogic = () => {
   const gridSizes = ref(inject('gridSizes') || 9);
-  const rows = ref(createSudokuGrid(gridSizes)); // ref を使用して初期化
+  const rows = ref(await apiCreateSudokuGrid(gridSizes.value));
   const currentDifficulty = ref(gridSizes); // 例として 'easy' をデフォルト値とする
   const puzzleCompleted = ref(false);
 
-  watch(rows, () => {
-    if (isComplete(rows.value) && isPuzzleValid(rows.value)) {
+  watch(rows, async () => {
+    if (await apiIsComplete(rows.value) && await apiIsPuzzleValid(rows.value)) {
       alert("Congratulations! You have completed the puzzle.");
       puzzleCompleted.value = true
     }
@@ -15,18 +16,21 @@ export const useSudokuLogic = () => {
 
   const { maxlength } = useMaxLength(gridSizes);
 
-  const validateMove = (rowIndex, colIndex, value) => {
+  const validateMove = async (rowIndex, colIndex, value) => {
     if (maxlength.value >= 2 && value.length === 1) {
       return;
     }
-    if (value.length >= 2 && !isValidMove(rows.value, rowIndex, colIndex, value)) {
-      alert("Invalid move!");
+    if (value.length >= 2) {
+      const isValid = await apiIsValidMove(rows.value, rowIndex, colIndex, value);
+      if (!isValid) {
+        alert("Invalid move!");
+      }
     }
   };
 
   const fillNumbers = async () => {
-    const newGrid = await generateSudoku(currentDifficulty.value);
-    rows.value = newGrid; // 新しいグリッドを割り当てる
+    const newGrid = await apiGenerateSudoku(currentDifficulty.value);
+    rows.value = newGrid;
   };
 
   const setDifficulty = (level) => {

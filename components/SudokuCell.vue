@@ -6,7 +6,6 @@
   </template>
   
   <script setup>
-  
   const props = defineProps({
     cell: Object,
     rowIndex: Number,

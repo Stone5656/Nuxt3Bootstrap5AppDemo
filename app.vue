@@ -1,14 +1,11 @@
 <template>
-  <div class="app">
-    <SudokuGrid />
-  </div>
+  <Navbar />
 </template>
 
 <script>
 export default {
   setup() {
     provide('gridSizes');
-    // 他のロジックがあればここに追加
   },
 };
 </script>

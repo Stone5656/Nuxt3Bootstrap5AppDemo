@@ -21,17 +21,39 @@ export const useSudokuGenerator = () => {
   function createSudokuGrid(size) {
     const grid = [];
     for (let i = 0; i < size; i++) {
-      const cells = [];
-      for (let j = 0; j < size; j++) {
-        cells.push({ index: j, value: '' });
-      }
-      grid.push({ index: i, cells });
+        const cells = [];
+        for (let j = 0; j < size; j++) {
+            cells.push({ 
+                index: j, 
+                value: '', 
+                possibleValues: new Set([...Array(size).keys()].map(k => k + 1))
+            });
+        }
+        grid.push({ index: i, cells });
     }
-    return grid;
+    return grid;}
+  function propagateConstraints(grid, row, col, value) {
+      const size = grid.length;
+      const sqrtSize = Math.sqrt(size);
+  
+      // 行と列の制約を伝播
+      for (let i = 0; i < size; i++) {
+          grid[row].cells[i].possibleValues.delete(value);
+          grid[i].cells[col].possibleValues.delete(value);
+      }
+  
+      // サブグリッドの制約を伝播
+      const startRow = Math.floor(row / sqrtSize) * sqrtSize;
+      const startCol = Math.floor(col / sqrtSize) * sqrtSize;
+      for (let i = 0; i < sqrtSize; i++) {
+          for (let j = 0; j < sqrtSize; j++) {
+              grid[startRow + i].cells[startCol + j].possibleValues.delete(value);
+          }
+      }
   }
   function fillGridRandomly(grid, row = 0, col = 0) {
     if (row === grid.length) {
-      return true; // グリッドの最後まで到達した場合、成功
+        return true; // グリッドの最後まで到達した場合、成功
     }
 
     const nextRow = col === grid.length - 1 ? row + 1 : row;
@@ -39,17 +61,47 @@ export const useSudokuGenerator = () => {
 
     const numbers = shuffleArray(1, grid.length);
     for (let num of numbers) {
-      if (isValidMove(grid, row, col, num)) {
-        grid[row].cells[col].value = num;
-        if (fillGridRandomly(grid, nextRow, nextCol)) {
-          return true; // 次のセルに進む
+        if (isValidMove(grid, row, col, num)) {
+            grid[row].cells[col].value = num;
+            propagateConstraints(grid, row, col, num); // 制約を伝播
+
+            if (fillGridRandomly(grid, nextRow, nextCol)) {
+                return true; // 次のセルに進む
+            }
+
+            // バックトラック: 値と制約をリセット
+            grid[row].cells[col].value = '';
+            resetConstraints(grid, row, col, num);
         }
-        grid[row].cells[col].value = ''; // バックトラック
-      }
     }
 
-    return false; // このセルに適切な数字が見つからない場合
+    return false; 
+}
+function resetConstraints(grid, row, col, value) {
+  const size = grid.length;
+  const sqrtSize = Math.sqrt(size);
+
+  // 行と列の制約をリセット
+  for (let i = 0; i < size; i++) {
+      if (i !== col) {
+          grid[row].cells[i].possibleValues.add(value);
+      }
+      if (i !== row) {
+          grid[i].cells[col].possibleValues.add(value);
+      }
   }
+
+  // サブグリッドの制約をリセット
+  const startRow = Math.floor(row / sqrtSize) * sqrtSize;
+  const startCol = Math.floor(col / sqrtSize) * sqrtSize;
+  for (let i = 0; i < sqrtSize; i++) {
+      for (let j = 0; j < sqrtSize; j++) {
+          if (startRow + i !== row || startCol + j !== col) {
+              grid[startRow + i].cells[startCol + j].possibleValues.add(value);
+          }
+      }
+  }
+}
 
   function shuffleArray(start, end) {
     const array = [];

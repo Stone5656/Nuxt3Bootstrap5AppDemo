@@ -40,19 +40,13 @@
 
 .sudoku-grid .cell {
     display: flex;
-    /* Flexboxを有効にする */
     justify-content: center;
-    /* 水平方向に中央に配置 */
     align-items: center;
-    /* 垂直方向に中央に配置 */
     width: 20px;
     height: 20px;
     border-top: 1px solid #000;
-    /* 上側に薄いボーダー */
     border-left: 1px solid #000;
-    /* 左側に薄いボーダー */
     box-sizing: border-box;
-    /* ボーダーとパディングを要素のサイズに含める */
     padding: 0;
 }
 
@@ -68,5 +62,9 @@
     box-sizing: border-box;
     /* ボーダーとパディングを要素のサイズに含める */
     padding: 0;
+}
+
+.blue:hover {
+color: blue;
 }
 </style>

@@ -2,7 +2,7 @@ const { isValidMove, isComplete, isPuzzleValid } = useSudokuSolver();
 const { generateSudoku,createSudokuGrid } = useSudokuGenerator()
 export const useSudokuLogic = () => {
   const gridSizes = ref(inject('gridSizes') || 9);
-  const rows = ref(createSudokuGrid(gridSizes)); // ref を使用して初期化
+  const rows = ref(createSudokuGrid(gridSizes.value)); // ref を使用して初期化
   const currentDifficulty = ref(gridSizes); // 例として 'easy' をデフォルト値とする
   const puzzleCompleted = ref(false);
 

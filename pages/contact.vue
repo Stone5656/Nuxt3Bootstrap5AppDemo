@@ -1,17 +1,9 @@
+import Navbar from '~/components/Navbar.vue';
 <template>
   <div class="container home">
     <Navbar />
-    <SudokuGrid />
   </div>
 </template>
-<script>
-export default {
-  setup() {
-    provide('gridSizes');
-  },
-};
-</script>
-
 <style scoped>
 .home{
   background-image: url(~/public/start_bg.jpg);
@@ -20,5 +12,6 @@ export default {
   height: 100vh;
   margin: 0 auto;
   max-width: 1980px;
+  max-height: 1000px;
 }
 </style>

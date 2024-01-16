@@ -25,18 +25,16 @@ provide('validateMove', validateMove);
 <style scoped>
 .sudoku-grid-container {
   display: flex;
-  /* フレックスボックスを使用 */
   justify-content: center;
-  /* 水平方向の中央に配置 */
   align-items: center;
-  /* 垂直方向の中央に配置 */
   height: 100vh;
-  /* コンテナの高さをビューポートの高さに設定 */
+  max-height: 700px;
 }
 
 .sudoku-grid-button{
   display: flex;
   flex-flow: column;
   margin-right: 5rem;
+  box-shadow: 0 0 10px #fff;
 }
 </style>

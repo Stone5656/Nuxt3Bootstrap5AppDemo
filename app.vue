@@ -1,15 +1,8 @@
 <template>
-  <Navbar />
+  <NuxtLayout>
+      <NuxtPage/>
+  </NuxtLayout>
 </template>
-
-<script>
-export default {
-  setup() {
-    provide('gridSizes');
-  },
-};
-</script>
-
 <style>
 @import "bootstrap/scss/bootstrap.scss";
 </style>

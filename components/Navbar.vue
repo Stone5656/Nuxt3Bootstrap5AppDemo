@@ -11,6 +11,7 @@
 .nav-list{
     text-align: center;
     height: 10%;
+    padding: 0;
 }
 .nav-list li{
     font-size: 42px;
@@ -23,5 +24,31 @@
     text-decoration: none;
     text-shadow: 0 0 10px #fff;
     color: #fff;
+}
+@media (max-width: 959px) {
+    .nav-list{
+        text-align: center;
+        height: 8%;
+        padding: 0;
+    }
+    .nav-list a{
+    text-decoration: none;
+    text-shadow: 0 0 8px #000;
+    color: #fff;
+    font-size: 32px;
+    }
+}
+@media (max-width: 480px) {
+    .nav-list{
+        text-align: center;
+        height: 5%;
+        padding: 0;
+    }
+    .nav-list a{
+    text-decoration: none;
+    text-shadow: 0 0 5px #000;
+    color: #fff;
+    font-size: 24px;
+    }
 }
 </style>

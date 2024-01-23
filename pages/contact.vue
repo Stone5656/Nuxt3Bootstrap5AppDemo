@@ -1,4 +1,3 @@
-import Navbar from '~/components/Navbar.vue';
 <template>
   <div class="container home">
     <Navbar />

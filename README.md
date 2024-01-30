@@ -15,6 +15,9 @@ UIをユーザーが使いやすいように変更する
 アルゴリズムを配列操作に変更
 key,value,hashの設定、探索を最適化、可能であれば表データにして計算の最適化を図る
 
+## 注意
+style.cssを消すとエラーを吐きます(原因不明)
+
 # Nuxt 3 Minimal Starter
 
 Look at the [nuxt 3 documentation](https://v3.nuxtjs.org) to learn more.

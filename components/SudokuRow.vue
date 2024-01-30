@@ -15,7 +15,6 @@
   </template>
   
 <script setup>
-import SudokuCell from './SudokuCell.vue';
 
 const rows = inject('rows');
 const gridSizes = inject('gridSizes');

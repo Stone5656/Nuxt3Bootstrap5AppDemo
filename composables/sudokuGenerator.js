@@ -130,7 +130,7 @@ function resetConstraints(grid, row, col, value) {
         cellsToRemove = Math.floor(totalCells * 0.6);
         break;
       default:
-        cellsToRemove = Math.floor(totalCells * 0.2); // デフォルトは簡単なレベル
+        cellsToRemove = Math.floor(totalCells * 0.5); // デフォルトは簡単なレベル
     }
 
     while (cellsToRemove > 0) {
